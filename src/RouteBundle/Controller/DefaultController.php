@@ -15,13 +15,13 @@ class DefaultController extends Controller
      * @Route("/search", name="front_search")
      * @Route("/login", name="front_login")
      */
-    public function frontAction($slug, $category)
+    public function frontAction($slug = null, $category = null)
     {
         $params = array();
         if(isset($slug))
-            $params[] = ['slug' => $slug];
+            $params['slug'] = $slug;
         if(isset($category))
-            $params[] = ['category' => $category];
+            $params['category'] = $category;
         return $this->render("::front.html.twig", $params);
     }
 
