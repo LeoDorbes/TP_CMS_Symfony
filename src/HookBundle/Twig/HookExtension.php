@@ -2,6 +2,8 @@
 
 namespace HookBundle\Twig;
 
+use HookBundle\Entity\Hook;
+use HookBundle\Repository\HookRepository;
 use Twig_Extension;
 use Twig_Environment;
 use Twig_SimpleFunction;
@@ -46,6 +48,7 @@ class HookExtension extends Twig_Extension
         //       4. Sort them using hook modules position
         //       5. Render each module view
         //       6. Return HTML
+
     }
 
     public function getName()

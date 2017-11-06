@@ -35,8 +35,15 @@ class ArticleManager
         $text,
         $category_id
     ) {
-        // @todo Make the creation method
-        //       Create an article using the entity manager
+        $newArticle = new Article();
+        $newArticle->setName($name);
+        $newArticle->setCover($cover);
+        $newArticle->setText($text);
+        $newArticle->setCategoryId($category_id);
+        $em = $this->get('content.manager');
+        $em->persist($newArticle);
+        $em->flush();
+        return $newArticle;
     }
 
     public function update($article)

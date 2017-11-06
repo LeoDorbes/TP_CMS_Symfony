@@ -17,7 +17,12 @@ class DefaultController extends Controller
      */
     public function frontAction($slug, $category)
     {
-        return $this->render("::front.html.twig");
+        $params = array();
+        if(isset($slug))
+            $params[] = ['slug' => $slug];
+        if(isset($category))
+            $params[] = ['category' => $category];
+        return $this->render("::front.html.twig", $params);
     }
 
     /**
@@ -29,6 +34,9 @@ class DefaultController extends Controller
      */
     public function adminAction($options = null)
     {
-        return $this->render("::admin.html.twig");
+        return $this->render("::admin.html.twig",
+            array(
+                'options' => $options,
+            ));
     }
 }
