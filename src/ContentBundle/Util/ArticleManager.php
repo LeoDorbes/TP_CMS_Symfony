@@ -43,7 +43,6 @@ class ArticleManager
         $em = $this->get('content.manager');
         $em->persist($newArticle);
         $em->flush();
-        return $newArticle;
     }
 
     public function update($article)
