@@ -42,9 +42,8 @@ class ArticleManager
         $newArticle->setCover($cover);
         $newArticle->setText($text);
         $newArticle->setCategoryId($category_id);
-        $em = $this->get('content.manager');
-        $em->persist($newArticle);
-        $em->flush();
+        $this->em->persist($newArticle);
+        $this->em->flush();
     }
 
     public function update($article)
@@ -59,11 +58,10 @@ class ArticleManager
      */
     public function get($id = NULL)
     {
-        $em = $this->get('entity.manager');
         if (is_null($id)) {
-            $res = $em->getRepository(Article::class)->findAll();
+            $res = $this->em->getRepository(Article::class)->findAll();
         } else {
-            $res = $em->getRepository(Article::class)->findOneById($id);
+            $res = $this->em->getRepository(Article::class)->findOneById($id);
         }
         var_dump($res);
         //TODO PARSE THIS RESULTSET
@@ -77,13 +75,12 @@ class ArticleManager
      */
     public function delete($id)
     {
-        $article = get($id);
+        $article = $this->get($id);
 
         if (is_null($article))
             return;
 
-        $em = $this->get('entity.manager');
-        $em->remove($article);
-        $em->flush();
+        $this->em->remove($article);
+        $this->em->flush();
     }
 }
