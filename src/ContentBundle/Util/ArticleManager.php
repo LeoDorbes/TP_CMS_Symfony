@@ -1,4 +1,5 @@
 <?php
+
 namespace ContentBundle\Util;
 
 use ContentBundle\Entity\Article;
@@ -24,7 +25,7 @@ class ArticleManager
     /**
      * Create an article in database
      * @param  String $name
-     * @param  String $cover       file path
+     * @param  String $cover file path
      * @param  String $text
      * @param  Integer $category_id
      * @return void
@@ -34,7 +35,8 @@ class ArticleManager
         $cover,
         $text,
         $category_id
-    ) {
+    )
+    {
         $newArticle = new Article();
         $newArticle->setName($name);
         $newArticle->setCover($cover);
@@ -57,7 +59,14 @@ class ArticleManager
      */
     public function get($id = NULL)
     {
-        // @todo Make the get method
+        $em = $this->get('entity.manager');
+        if (is_null($id)) {
+            $res = $em->getRepository(Article::class)->findAll();
+        } else {
+            $res = $em->getRepository(Article::class)->findOneById($id);
+        }
+        var_dump($res);
+        //TODO PARSE THIS RESULTSET
         //       Find an article from ID or if no ID find all articles, then return
     }
 
@@ -68,7 +77,13 @@ class ArticleManager
      */
     public function delete($id)
     {
-        // @todo Make the delete method
-        //       Find the article and delete it
+        $article = get($id);
+
+        if (is_null($article))
+            return;
+
+        $em = $this->get('entity.manager');
+        $em->remove($article);
+        $em->flush();
     }
 }
