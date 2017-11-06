@@ -47,7 +47,7 @@ class UserManager
         $user->setPlainPassword($plain_password);
         $user->setRoles($roles);
         $user->setEnabled($enabled);
-        $this->um->updateUser($user);
+        $this->update($user);
     }
 
     public function update($user)
@@ -78,7 +78,12 @@ class UserManager
      */
     public function delete($id)
     {
-        // @todo Make the delete method
         //       Delete a user
+        $user = $this->get($id);
+
+        if (is_null($user))
+            return;
+
+        $this->um->deleteUser($user);
     }
 }
