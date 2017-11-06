@@ -50,8 +50,14 @@ class CategoryManager
      */
     public function get($id = NULL)
     {
-        // @todo Make the get method
-        //       Find a category from ID or if no ID find all categories, then return
+        if (is_null($id)) {
+            $res = $this->em->getRepository(Category::class)->findAll();
+        } else {
+            $res = $this->em->getRepository(Category::class)->findOneById($id);
+        }
+        var_dump($res);
+        //TODO PARSE THIS RESULTSET
+        //       Find an article from ID or if no ID find all articles, then return
     }
 
     /**
@@ -62,7 +68,13 @@ class CategoryManager
      */
     public function delete($id)
     {
-        // @todo Make the create method
         //       Find the category and delete it
+        $cat = $this->get($id);
+
+        if(is_null($cat))
+            return;
+
+        $this->em->remove($cat);
+        $this->em->flush();
     }
 }

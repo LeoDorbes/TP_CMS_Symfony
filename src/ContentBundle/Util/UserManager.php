@@ -1,4 +1,5 @@
 <?php
+
 namespace ContentBundle\Util;
 
 use FOS\UserBundle\Doctrine\UserManager as FOSUserManager;
@@ -28,7 +29,7 @@ class UserManager
      * @param  String $username
      * @param  String $email
      * @param  String $plain_password
-     * @param  array  $roles
+     * @param  array $roles
      * @return void
      */
     public function create(
@@ -37,9 +38,16 @@ class UserManager
         $plain_password,
         $roles = array(),
         $enabled = false
-    ) {
-        // @todo Make the create method
+    )
+    {
         //       Create a user using the FOSUserManager ($this->um)
+        $user = $this->um->createUser();
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setPlainPassword($plain_password);
+        $user->setRoles($roles);
+        $user->setEnabled($enabled);
+        $this->um->updateUser($user);
     }
 
     public function update($user)
