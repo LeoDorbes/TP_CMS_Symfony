@@ -2,8 +2,7 @@
 
 namespace TemplateBundle\Service;
 
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
+use Assetic\Factory\AssetFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Finder\Finder;
 use AppKernel;
@@ -48,6 +47,7 @@ class AssetManager
 
         // @todo Find local stylesheets and return them
         // @tips Use the Finder class
+        return array();
     }
 
     /**
@@ -60,11 +60,10 @@ class AssetManager
 
         $finder = new Finder();
         $finder->files()->in($this->getTemplateStylesheetsPath());
-        var_dump('test');
 
         $filesArray = array();
         foreach ($finder as $file) {
-            $filesArray[] = FileAsset($file->getRealPath());
+            $filesArray[] = $file->getRelativePath().".".$file->getRelativePathname();
 
             //@TODO : Delete when sure it's not usefull anymore :
 
@@ -78,6 +77,12 @@ class AssetManager
             //var_dump($file->getRelativePathname());
         }
 
+        $factory = new AssetFactory($this->getTemplateStylesheetsPath());
+        $factory->setAssetManager(new \Assetic\AssetManager());
+
+        $resource = $factory->createAsset(
+          $filesArray
+        );
 
         return $filesArray;
         // @todo Find template stylesheets and return them
@@ -111,6 +116,7 @@ class AssetManager
     {
         // @todo Find local javascripts and return them
         // @tips Use the Finder class
+        return array();
     }
 
     /**
