@@ -31,8 +31,11 @@ class CategoryManager
         $name,
         $parentId = NULL
     ) {
-        // @todo Make the create method
-        //       Create a new category
+        $category = new Category();
+        $category->setName($name);
+        $category->setParentId($parentId);
+        $this->em->persist($category);
+        $this->em->flush();
     }
 
     public function update($category)
