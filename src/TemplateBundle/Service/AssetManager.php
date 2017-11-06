@@ -2,6 +2,7 @@
 
 namespace TemplateBundle\Service;
 
+use Assetic\Asset\AssetCollection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Finder\Finder;
 use AppKernel;
@@ -33,7 +34,6 @@ class AssetManager
             $path = $this->template_manager->getAbsoluteTemplatePath() . "/front/css";
         else if (strpos($this->route_name, "admin") === 0)
             $path = $this->template_manager->getAbsoluteTemplatePath() . "/admin/css";
-
         return $path;
     }
 
@@ -44,6 +44,15 @@ class AssetManager
      */
     private function getLocalStylesheets()
     {
+        $resource = new AssetCollection(
+            array(
+                new FileAsset(getTemplateStylesheetsPath().'0-font-awesome.min.css'),
+                new FileAsset(getTemplateStylesheetsPath().'0-font-awesome.min.css'),
+            ),
+            array(
+                new CssCompressorFilter('/path/to/yuicompressor.jar')
+            )
+        );
         // @todo Find local stylesheets and return them
         // @tips Use the Finder class
     }
@@ -55,6 +64,7 @@ class AssetManager
      */
     private function getTemplateStylesheets()
     {
+
         // @todo Find template stylesheets and return them
         // @tips Use the Finder class
     }
@@ -84,6 +94,7 @@ class AssetManager
      */
     public function getLocalJavascripts()
     {
+
         // @todo Find local javascripts and return them
         // @tips Use the Finder class
     }

@@ -5,3 +5,12 @@ services:
     template.manager:
         class: TemplateBundle\Service\TemplateManager
         arguments: ["@doctrine.orm.entity_manager", "%kernel.project_dir%"]
+
+        # app/config/config.yml
+        assetic:
+            # java: '/usr/bin/java'
+            filters:
+                yui_css:
+                    jar: '%kernel.project_dir%/app/Resources/java/yuicompressor.jar'
+                yui_js:
+                    jar: '%kernel.project_dir%/app/Resources/java/yuicompressor.jar'

@@ -36,7 +36,6 @@ class DefaultController extends Controller
         //       Load all javascripts files and return them in a response
     }
 
-
         /**
          * @Route("/{path}", requirements={"path"=".+"})
          */
