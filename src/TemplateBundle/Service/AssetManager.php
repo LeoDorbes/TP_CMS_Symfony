@@ -3,6 +3,7 @@
 namespace TemplateBundle\Service;
 
 use Assetic\Asset\AssetCollection;
+use Assetic\Asset\FileAsset;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Finder\Finder;
 use AppKernel;
@@ -44,15 +45,7 @@ class AssetManager
      */
     private function getLocalStylesheets()
     {
-        $resource = new AssetCollection(
-            array(
-                new FileAsset(getTemplateStylesheetsPath().'0-font-awesome.min.css'),
-                new FileAsset(getTemplateStylesheetsPath().'0-font-awesome.min.css'),
-            ),
-            array(
-                new CssCompressorFilter('/path/to/yuicompressor.jar')
-            )
-        );
+
         // @todo Find local stylesheets and return them
         // @tips Use the Finder class
     }
@@ -65,6 +58,28 @@ class AssetManager
     private function getTemplateStylesheets()
     {
 
+        $finder = new Finder();
+        $finder->files()->in($this->getTemplateStylesheetsPath());
+        var_dump('test');
+
+        $filesArray = array();
+        foreach ($finder as $file) {
+            $filesArray[] = FileAsset($file->getRealPath());
+
+            //@TODO : Delete when sure it's not usefull anymore :
+
+            // Dump the absolute path
+            //var_dump($file->getRealPath());
+
+            // Dump the relative path to the file, omitting the filename
+            //var_dump($file->getRelativePath());
+
+            // Dump the relative path to the file
+            //var_dump($file->getRelativePathname());
+        }
+
+
+        return $filesArray;
         // @todo Find template stylesheets and return them
         // @tips Use the Finder class
     }
@@ -94,7 +109,6 @@ class AssetManager
      */
     public function getLocalJavascripts()
     {
-
         // @todo Find local javascripts and return them
         // @tips Use the Finder class
     }
@@ -108,6 +122,28 @@ class AssetManager
     {
         // @todo Find template javascripts and return them
         // @tips Use the Finder class
+
+        $finder = new Finder();
+        $finder->files()->in($this->getTemplateJavascriptsPath());
+        var_dump('test');
+
+        $filesArray = array();
+        foreach ($finder as $file) {
+            $filesArray[] = FileAsset($file->getRealPath());
+
+            //@TODO : Delete when sure it's not usefull anymore :
+
+            // Dump the absolute path
+            //var_dump($file->getRealPath());
+
+            // Dump the relative path to the file, omitting the filename
+            //var_dump($file->getRelativePath());
+
+            // Dump the relative path to the file
+            //var_dump($file->getRelativePathname());
+        }
+        return $filesArray;
+
     }
 
     public function getJavascripts()

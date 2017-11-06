@@ -22,8 +22,12 @@ class DefaultController extends Controller
      */
     public function stylesheetsAction()
     {
+        $am = $this->get('template.asset_manager');
+        $am->getStylesheets();
+
         // @todo Make stylesheets action
         //       Load all stylesheet files and return them in a response
+        return new Response();
     }
 
     /**
@@ -34,6 +38,7 @@ class DefaultController extends Controller
     {
         // @todo Make javascripts action
         //       Load all javascripts files and return them in a response
+        return new Response();
     }
 
         /**
