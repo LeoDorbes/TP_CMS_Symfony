@@ -24,12 +24,11 @@ class DefaultController extends Controller
     {
         $am = $this->get('template.asset_manager');
         $fileArray = $am->getStylesheets();
-
-
-        //Transformer le fileArray en un seul file et le retourner avec le BinaryFileResponse
-        // @todo Make stylesheets action
-        //       Load all stylesheet files and return them in a response
-        return new Response();
+        $grossfile = null;
+        foreach ($fileArray as $file){
+            $grossfile .= $file->getContents();
+        }
+        return new Response($grossfile);
     }
 
     /**
@@ -38,9 +37,13 @@ class DefaultController extends Controller
      */
     public function javascriptsAction()
     {
-        // @todo Make javascripts action
-        //       Load all javascripts files and return them in a response
-        return new Response();
+        $am = $this->get('template.asset_manager');
+        $fileArray = $am->getJavascripts();
+        $grossfile = null;
+        foreach ($fileArray as $file){
+            $grossfile .= $file->getContents();
+        }
+        return new Response($grossfile);
     }
 
     /**

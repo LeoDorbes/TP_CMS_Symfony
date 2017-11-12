@@ -72,6 +72,7 @@ class AssetManager
         foreach ($finder as $file) {
             $filesArray[] = $file;
 
+
             //new File($file->getRelativePath().".".$file->getRelativePathname(),false);
 
             //@TODO : Delete when sure it's not usefull anymore :
@@ -85,14 +86,7 @@ class AssetManager
             // Dump the relative path to the file
             //var_dump($file->getRelativePathname());
         }
-        /*
-        $factory = new AssetFactory($this->getTemplateStylesheetsPath());
-        $factory->setAssetManager(new \Assetic\AssetManager());
 
-        $resource = $factory->createAsset(
-          $filesArray
-        );
-        */
 
         return $filesArray;
         // @todo Find template stylesheets and return them
