@@ -16,14 +16,13 @@ class AssetManager
     private $kernel;
     private $template_manager;
     private $route_name;
-    private $container;
 
-    public function __construct(AppKernel $kernel, TemplateManager $template_manager, RequestStack $request, Container $container)
+    public function __construct(AppKernel $kernel, TemplateManager $template_manager, RequestStack $request)
     {
         $this->kernel = $kernel;
         $this->template_manager = $template_manager;
         $this->route_name = $request->getCurrentRequest()->get('_route');
-        $this->container = $container;
+
     }
 
     /**
@@ -47,16 +46,16 @@ class AssetManager
      */
     private function getLocalStylesheets()
     {
-
         $finder = new Finder();
-        $fileLocator = $this->container->get('file_locator');
+        $fileLocator = $this->kernel->getContainer()->get('file_locator');
         $path = $fileLocator->locate($this->local_stylesheets);
 
-        $finder->files()->in($this->getTemplateStylesheetsPath());
-
-        // @todo Find local stylesheets and return them
-        // @tips Use the Finder class
-        return array();
+        $finder->files()->in($path);
+        $filesArray = array();
+        foreach ($finder as $file) {
+            $filesArray[] = $file;
+        }
+        return $filesArray;
     }
 
     /**
@@ -125,9 +124,16 @@ class AssetManager
      */
     public function getLocalJavascripts()
     {
-        // @todo Find local javascripts and return them
-        // @tips Use the Finder class
-        return array();
+        $finder = new Finder();
+        $fileLocator = $this->kernel->getContainer()->get('file_locator');
+        $path = $fileLocator->locate($this->local_javascripts);
+
+        $finder->files()->in($path);
+        $filesArray = array();
+        foreach ($finder as $file) {
+            $filesArray[] = $file;
+        }
+        return $filesArray;
     }
 
     /**
@@ -137,30 +143,13 @@ class AssetManager
      */
     private function getTemplateJavascripts()
     {
-        // @todo Find template javascripts and return them
-        // @tips Use the Finder class
-
         $finder = new Finder();
         $finder->files()->in($this->getTemplateJavascriptsPath());
-        var_dump('test');
-
         $filesArray = array();
         foreach ($finder as $file) {
-            $filesArray[] = FileAsset($file->getRealPath());
-
-            //@TODO : Delete when sure it's not usefull anymore :
-
-            // Dump the absolute path
-            //var_dump($file->getRealPath());
-
-            // Dump the relative path to the file, omitting the filename
-            //var_dump($file->getRelativePath());
-
-            // Dump the relative path to the file
-            //var_dump($file->getRelativePathname());
+            $filesArray[] = $file;
         }
         return $filesArray;
-
     }
 
     public function getJavascripts()
