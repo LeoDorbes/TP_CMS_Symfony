@@ -23,8 +23,10 @@ class DefaultController extends Controller
     public function stylesheetsAction()
     {
         $am = $this->get('template.asset_manager');
-        $am->getStylesheets();
+        $fileArray = $am->getStylesheets();
 
+
+        //Transformer le fileArray en un seul file et le retourner avec le BinaryFileResponse
         // @todo Make stylesheets action
         //       Load all stylesheet files and return them in a response
         return new Response();
@@ -41,24 +43,23 @@ class DefaultController extends Controller
         return new Response();
     }
 
-        /**
-         * @Route("/{path}", requirements={"path"=".+"})
-         */
-        public function filenameAction($path)
-        {
-            $exploded_path = explode(".", $path);
-            $extension = end($exploded_path);
+    /**
+     * @Route("/{path}", requirements={"path"=".+"})
+     */
+    public function filenameAction($path)
+    {
+        $exploded_path = explode(".", $path);
+        $extension = end($exploded_path);
 
-            if ($extension)
-            {
-                $path = $this->get('template.manager')->getAbsoluteTemplatePath() . "/" . $path;
+        if ($extension) {
+            $path = $this->get('template.manager')->getAbsoluteTemplatePath() . "/" . $path;
 
-                if (!file_exists($path))
-                    throw new NotFoundHttpException("Resource not found!");
+            if (!file_exists($path))
+                throw new NotFoundHttpException("Resource not found!");
 
-                return new BinaryFileResponse($path);
-            }
-
-            return new Response();
+            return new BinaryFileResponse($path);
         }
+
+        return new Response();
+    }
 }

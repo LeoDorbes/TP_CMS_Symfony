@@ -2,7 +2,8 @@
 
 namespace TemplateBundle\Service;
 
-use Assetic\Factory\AssetFactory;
+
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Finder\Finder;
 use AppKernel;
@@ -15,12 +16,14 @@ class AssetManager
     private $kernel;
     private $template_manager;
     private $route_name;
+    private $container;
 
-    public function __construct(AppKernel $kernel, TemplateManager $template_manager, RequestStack $request)
+    public function __construct(AppKernel $kernel, TemplateManager $template_manager, RequestStack $request, Container $container)
     {
         $this->kernel = $kernel;
         $this->template_manager = $template_manager;
         $this->route_name = $request->getCurrentRequest()->get('_route');
+        $this->container = $container;
     }
 
     /**
@@ -45,6 +48,12 @@ class AssetManager
     private function getLocalStylesheets()
     {
 
+        $finder = new Finder();
+        $fileLocator = $this->container->get('file_locator');
+        $path = $fileLocator->locate($this->local_stylesheets);
+
+        $finder->files()->in($this->getTemplateStylesheetsPath());
+
         // @todo Find local stylesheets and return them
         // @tips Use the Finder class
         return array();
@@ -57,13 +66,14 @@ class AssetManager
      */
     private function getTemplateStylesheets()
     {
-
         $finder = new Finder();
         $finder->files()->in($this->getTemplateStylesheetsPath());
 
         $filesArray = array();
         foreach ($finder as $file) {
-            $filesArray[] = $file->getRelativePath().".".$file->getRelativePathname();
+            $filesArray[] = $file;
+
+            //new File($file->getRelativePath().".".$file->getRelativePathname(),false);
 
             //@TODO : Delete when sure it's not usefull anymore :
 
@@ -76,13 +86,14 @@ class AssetManager
             // Dump the relative path to the file
             //var_dump($file->getRelativePathname());
         }
-
+        /*
         $factory = new AssetFactory($this->getTemplateStylesheetsPath());
         $factory->setAssetManager(new \Assetic\AssetManager());
 
         $resource = $factory->createAsset(
           $filesArray
         );
+        */
 
         return $filesArray;
         // @todo Find template stylesheets and return them

@@ -5,7 +5,6 @@ services:
     template.manager:
         class: TemplateBundle\Service\TemplateManager
         arguments: ["@doctrine.orm.entity_manager", "%kernel.project_dir%"]
-
         # app/config/config.yml
         assetic:
             # java: '/usr/bin/java'
