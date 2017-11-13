@@ -48,6 +48,7 @@ class ArticleManager
 
     public function update($article)
     {
+        $this->em->persist($article);
         $this->em->flush();
     }
 
@@ -58,14 +59,10 @@ class ArticleManager
      */
     public function get($id = NULL)
     {
-        if (is_null($id)) {
-            $res = $this->em->getRepository(Article::class)->findAll();
-        } else {
-            $res = $this->em->getRepository(Article::class)->findOneById($id);
-        }
-        var_dump($res);
-        //TODO PARSE THIS RESULTSET
         //       Find an article from ID or if no ID find all articles, then return
+        return is_null($id)
+            ? $this->em->getRepository(Article::class)->findAll()
+            : $this->em->getRepository(Article::class)->findOneById($id);
     }
 
     /**

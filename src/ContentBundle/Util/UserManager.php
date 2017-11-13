@@ -63,13 +63,9 @@ class UserManager
     public function get($id = NULL)
     {
         //       Find a user from ID or get all users, then return
-        if (is_null($id)) {
-            $res = $this->em->getRepository(User::class)->findAll();
-        } else {
-            $res = $this->em->getRepository(User::class)->findOneById($id);
-        }
-        var_dump($res);
-        //TODO PARSE THIS RESULTSET
+        return is_null($id)
+            ? $this->em->getRepository(User::class)->findAll()
+            : $this->em->getRepository(User::class)->findOneById($id);
     }
 
     public function getCurrent()

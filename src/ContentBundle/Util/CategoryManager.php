@@ -50,14 +50,10 @@ class CategoryManager
      */
     public function get($id = NULL)
     {
-        if (is_null($id)) {
-            $res = $this->em->getRepository(Category::class)->findAll();
-        } else {
-            $res = $this->em->getRepository(Category::class)->findOneById($id);
-        }
-        var_dump($res);
-        //TODO PARSE THIS RESULTSET
         //       Find an article from ID or if no ID find all articles, then return
+        return is_null($id)
+            ? $this->em->getRepository(Category::class)->findAll()
+            : $this->em->getRepository(Category::class)->findOneById($id);
     }
 
     /**
