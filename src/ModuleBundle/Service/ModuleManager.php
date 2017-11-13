@@ -89,9 +89,12 @@ class ModuleManager
      */
     public function deactivate($module_name)
     {
-        // @todo Make the deactivate method
         //       Find the module and update its value
+        $module = $this->em->getRepository(Module::class)->findOneByName($module_name);
+        $module->setActive(false);
 
+        $this->em->persist($module);
+        $this->em->flush();
         return true;
     }
 
