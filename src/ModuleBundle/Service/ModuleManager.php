@@ -2,6 +2,7 @@
 
 namespace ModuleBundle\Service;
 
+use ModuleBundle\Entity\Module;
 use TemplateBundle\Service\TemplateManager;
 use ConfigBundle\Service\ConfigurationManager;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -71,9 +72,12 @@ class ModuleManager
      */
     public function activate($module_name)
     {
-        // @todo Make the activate method
         //       Find the module and update its value
+        $module = $this->em->getRepository(Module::class)->findOneByName($module_name);
+        $module->setActive(true);
 
+        $this->em->persist($module);
+        $this->em->flush();
         return true;
     }
 
