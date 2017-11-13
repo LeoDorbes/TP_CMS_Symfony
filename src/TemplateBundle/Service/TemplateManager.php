@@ -3,6 +3,8 @@
 namespace TemplateBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use TemplateBundle\Entity\Template;
 
 class TemplateManager
@@ -21,6 +23,18 @@ class TemplateManager
         $template = $this->em->getRepository("TemplateBundle:Template")->findOneByIsActive(true);
 
         return "@Template/" . $template->getName();
+    }
+
+    public function getTemplateTwig(string $name) {
+        $path = $this->getAbsoluteTemplatePath() . "/modules/" . $name . "/";
+        $finder = new Finder();
+        $files = $finder->files()->in($path);
+        $twig = "";
+        foreach ($files as $file) {
+            if($file->getExtension() == "twig")
+                $twig .= $file->getContents();
+        }
+        return $twig;
     }
 
     public function getAbsoluteTemplatePath()

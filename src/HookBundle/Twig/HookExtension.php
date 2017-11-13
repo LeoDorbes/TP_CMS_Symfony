@@ -3,7 +3,9 @@
 namespace HookBundle\Twig;
 
 use HookBundle\Entity\Hook;
-use HookBundle\Repository\HookRepository;
+use HookBundle\Entity\HookModule;
+use ModuleBundle\Entity\Module;
+use TemplateBundle\Entity\Template;
 use Twig_Extension;
 use Twig_Environment;
 use Twig_SimpleFunction;
@@ -33,21 +35,37 @@ class HookExtension extends Twig_Extension
 
     /**
      * Hook from template
-     * @param  Twig_Environment $env       Twig service for rendering
-     * @param  String           $hook_name
-     * @param  String           $page_name
+     * @param  Twig_Environment $env Twig service for rendering
+     * @param  String $hook_name
+     * @param  String $page_name
      * @return String                      The HTML to display
      */
     public function hookFunction(Twig_Environment $env, $hook_name, $page_name)
     {
-        // @todo Make the hook function
         //       1. Load hook from DB
+        $hook = $this->em->getRepository(Hook::class)->findOneBy(array('name' => $hook_name));
         //       2. Load modules ID registered with the hook
-        //       3. Load modules
-        //       4. Sort them using hook modules position
-        //       5. Render each module view
-        //       6. Return HTML
+        $hookModules = $this->em->getRepository(HookModule::class)->findByIdModule($hook->getId());
 
+        //       3. Load modules
+        $modules = array();
+        foreach ($hookModules as $moduleElement) {
+            $mod = $this->em->getRepository(Module::class)->find($moduleElement->getIdModule());
+            $modules[$mod->getName()] = [$mod->getName(), $mod];
+        }
+
+        $this->mm->load($modules);
+
+        //       5. Render each module view
+
+        $twig = "";
+        foreach ($modules as $name => $mod) {
+            if (!is_null($this->em->getRepository(Template::class)->findOneById($mod[1]->getId()))) {
+                $twig .= $this->mm->getQuentainer()->get('template.manager')->getTemplateTwig($name);
+            }
+        }
+        //       6. Return HTML
+        return $twig;
     }
 
     public function getName()

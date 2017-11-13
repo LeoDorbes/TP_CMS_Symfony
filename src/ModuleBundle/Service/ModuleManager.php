@@ -16,6 +16,11 @@ class ModuleManager
     private $container;
     private $em;
 
+    public function getQuentainer()
+    {
+        return $this->container;
+    }
+
     public function __construct(Container $container, string $template_dir, string $project_dir)
     {
         $this->project_dir = $project_dir;
@@ -42,15 +47,15 @@ class ModuleManager
         }
 
         $to_load = array();
-        foreach($modules as $module)
+        foreach ($modules as $module) {
             $to_load[$module[0]] = $module[1];
-
+        }
         $template_class_modules = $this->loadTemplateModules($to_load);
         $project_class_modules = $this->loadProjectModules($to_load);
 
         $loaded = array_merge($template_class_modules, $project_class_modules);
         $loaded_sort = array();
-        foreach($modules as $key => $module)
+        foreach ($modules as $key => $module)
             if (array_key_exists($module[0], $loaded))
                 $loaded_sort[$key] = $loaded[$module[0]];
 
@@ -168,7 +173,7 @@ class ModuleManager
         $class_modules = array();
         $class_map = $this->createMap($this->template_modules_dir);
 
-        foreach($class_map as $class => $path) {
+        foreach ($class_map as $class => $path) {
             $module_name = strtolower($class);
             if ($modules != "all" && (!array_key_exists($module_name, $modules) || !$modules[$module_name]))
                 continue;
@@ -190,7 +195,7 @@ class ModuleManager
         $class_modules = array();
         $class_map = $this->createMap($this->project_modules_dir);
 
-        foreach($class_map as $class => $path) {
+        foreach ($class_map as $class => $path) {
             $module_name = strtolower($class);
             if ($modules != "all" && (!array_key_exists($module_name, $modules) || !$modules[$module_name]))
                 continue;
@@ -315,7 +320,7 @@ class ModuleManager
                         }
                     }
 
-                    $classes[] = ltrim($namespace.$class, '\\');
+                    $classes[] = ltrim($namespace . $class, '\\');
                     break;
                 default:
                     break;
